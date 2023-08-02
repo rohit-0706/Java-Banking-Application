@@ -2,9 +2,11 @@ package com.rohit.bankingProject.service.impl;
 
 import com.rohit.bankingProject.dto.AccountInfo;
 import com.rohit.bankingProject.dto.BankResponse;
+import com.rohit.bankingProject.dto.EmailDetails;
 import com.rohit.bankingProject.dto.UserRequest;
 import com.rohit.bankingProject.entity.User;
 import com.rohit.bankingProject.repository.UserRepository;
+import com.rohit.bankingProject.service.EmailService;
 import com.rohit.bankingProject.service.UserService;
 import com.rohit.bankingProject.utils.AccountUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    EmailService emailService;
 
 
 
@@ -50,6 +55,20 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         User savedUser=userRepository.save(newUser);
+
+        EmailDetails emailDetails = EmailDetails.builder()
+                .subject("ACCOUNT CREATION")
+                .recipient(savedUser.getEmail())
+                .messageBody("Congratulations! Your Account has been successfully created.\n" +
+                        "Your Account details are :\n" +
+                        "Account Name : " + savedUser.getFirstName() + " " + savedUser.getLastName() + " " + savedUser.getOtherName() + "\n" +
+                        "Account Number : " + savedUser.getAccountNumber()
+                )
+
+                .build();
+        emailService.sendEmailAlert(emailDetails);
+
+
         return BankResponse.builder()
                 .responseCode(AccountUtils.ACCOUNT_CREATION_SUCCESS)
                 .responseMessage(AccountUtils.ACCOUNT_CREATION_MESSAGE)
