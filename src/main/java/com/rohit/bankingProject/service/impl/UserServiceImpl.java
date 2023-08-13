@@ -175,7 +175,56 @@ public class UserServiceImpl implements UserService {
                             .build())
                     .build();
         }
+    }
 
+    @Override
+    public BankResponse transfer(TransferRequest transferRequest) {
+        //get the account to debit
+        //check if the amount i'm debiting is not more than the current balance
+        //debit the account
+        //get the account to credit
+        //credited the account
+        Boolean isSourceAccountExist = userRepository.existsByAccountNumber(transferRequest.getSourceAccountNumber());
+        Boolean isDestinationAccountExist = userRepository.existsByAccountNumber(transferRequest.getDestinationAccountNumber());
+        if(!isDestinationAccountExist){
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.DESTINATION_ACCOUNT_NOT_FOUND)
+                    .responseMessage(AccountUtils.DESTINATION_ACCOUNT_NOT_FOUNT_MESSAGE)
+                    .accountInfo(null)
+                    .build();
+        }
+        if(!isSourceAccountExist){
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.SOURCE_ACCOUNT_NOT_FOUND)
+                    .responseMessage(AccountUtils.SOURCE_ACCOUNT_NOT_FOUNT_MESSAGE)
+                    .accountInfo(null)
+                    .build();
+        }
+        User sourceAccountUser = userRepository.findByAccountNumber(transferRequest.getSourceAccountNumber());
+        if(transferRequest.getAmount().compareTo(sourceAccountUser.getAccountBalance())>0){
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.INSUFFICIENT_BALANCE_CODE)
+                    .responseMessage(AccountUtils.INSUFFICIENT_BALANCE_MESSAGE)
+                    .accountInfo(null)
+                    .build();
+        }
+        sourceAccountUser.setAccountBalance(sourceAccountUser.getAccountBalance().subtract(transferRequest.getAmount()));
+        userRepository.save(sourceAccountUser);
+        EmailDetails debitAlerts = EmailDetails.builder()
+                .messageBody("The sum of " + transferRequest.getAmount() + "has been debited from your account! Your Current balance is " + sourceAccountUser.getAccountBalance())
+                .subject("DEBIT ALERT")
+                .recipient(sourceAccountUser.getEmail())
+                .build();
+
+        User destinationAccountUser = userRepository.findByAccountNumber((transferRequest.setDestinationAccountNumber()));
+
+        destinationAccountUser.setAccountBalance(destinationAccountUser.getAccountBalance().add(transferRequest.getAmount()));
+        userRepository.save(destinationAccountUser);
+        EmailDetails creditAlert = EmailDetails.builder()
+                .messageBody("The sum of " + transferRequest.getAmount() + "has been credited to your account! Your Current balance is " + destinationAccountUser.getAccountBalance())
+                .subject("CREDIT ALERT")
+                .recipient(destinationAccountUser.getEmail())
+                .build();
 
 
     }

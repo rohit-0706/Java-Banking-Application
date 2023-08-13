@@ -21,6 +21,10 @@ public class AccountUtils {
     public static final String INSUFFICIENT_BALANCE_MESSAGE = "Insufficient Balance in your Account";
     public static final String ACCOUNT_DEBITED_SUCCESSFULLY = "007";
     public static final String ACCOUNT_DEBITED_SUCCESSFULLY_MESSAGE = "User Account Debited Successfully";
+    public static final String DESTINATION_ACCOUNT_NOT_FOUND = "008";
+    public static final String DESTINATION_ACCOUNT_NOT_FOUNT_MESSAGE = "Destination account not found";
+    public static final String SOURCE_ACCOUNT_NOT_FOUND = "009";
+    public static final String SOURCE_ACCOUNT_NOT_FOUNT_MESSAGE = "Source account not found";
 
     public static String generateAccountNumber(){
         /**
