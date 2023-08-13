@@ -1,6 +1,7 @@
 package com.rohit.bankingProject.controller;
 
 import com.rohit.bankingProject.dto.BankResponse;
+import com.rohit.bankingProject.dto.CreditDebitRequest;
 import com.rohit.bankingProject.dto.EnquiryRequest;
 import com.rohit.bankingProject.dto.UserRequest;
 import com.rohit.bankingProject.service.UserService;
@@ -26,6 +27,16 @@ public class UserController {
     @GetMapping("/nameEnquiry")
     public String nameEnquiry(@RequestBody EnquiryRequest enquiryRequest){
         return userService.nameEnquiry(enquiryRequest);
+    }
+
+    @PostMapping("credit")
+    public BankResponse creditAccount(@RequestBody CreditDebitRequest creditDebitRequest){
+        return userService.creditAccount(creditDebitRequest);
+    }
+
+    @PostMapping("debit")
+    public BankResponse debitAccount(@RequestBody CreditDebitRequest creditDebitRequest){
+        return userService.debitAccount((creditDebitRequest));
     }
 
 

@@ -15,6 +15,12 @@ public class AccountUtils {
     public static final String ACCOUNT_NOT_EXIST_MESSAGE = "User is not exist with the given info";
     public static final String ACCOUNT_FOUND_CODE = "004";
     public static final String ACCOUNT_FOUND_SUCCESS = "User Account Found";
+    public static final String ACCOUNT_CREDITED_SUCCESS = "005";
+    public static final String ACCOUNT_CREDITED_SUCCESS_MESSAGE = "User Account Credited Successfully";
+    public static final String INSUFFICIENT_BALANCE_CODE = "006";
+    public static final String INSUFFICIENT_BALANCE_MESSAGE = "Insufficient Balance in your Account";
+    public static final String ACCOUNT_DEBITED_SUCCESSFULLY = "007";
+    public static final String ACCOUNT_DEBITED_SUCCESSFULLY_MESSAGE = "User Account Debited Successfully";
 
     public static String generateAccountNumber(){
         /**
@@ -33,9 +39,6 @@ public class AccountUtils {
         StringBuilder accountNumber = new StringBuilder();
 
         return accountNumber.append(year).append(randomNumber).toString();
-
-
-
     }
 
 
