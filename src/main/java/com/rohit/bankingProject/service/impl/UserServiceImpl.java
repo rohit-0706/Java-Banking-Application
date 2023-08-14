@@ -209,23 +209,31 @@ public class UserServiceImpl implements UserService {
                     .build();
         }
         sourceAccountUser.setAccountBalance(sourceAccountUser.getAccountBalance().subtract(transferRequest.getAmount()));
+        String sourceUserName = sourceAccountUser.getFirstName() + " " + sourceAccountUser.getLastName() + " " + sourceAccountUser.getOtherName();
         userRepository.save(sourceAccountUser);
         EmailDetails debitAlerts = EmailDetails.builder()
                 .messageBody("The sum of " + transferRequest.getAmount() + "has been debited from your account! Your Current balance is " + sourceAccountUser.getAccountBalance())
                 .subject("DEBIT ALERT")
                 .recipient(sourceAccountUser.getEmail())
                 .build();
+        emailService.sendEmailAlert(debitAlerts);
 
-        User destinationAccountUser = userRepository.findByAccountNumber((transferRequest.setDestinationAccountNumber()));
+        User destinationAccountUser = userRepository.findByAccountNumber((transferRequest.getDestinationAccountNumber()));
 
         destinationAccountUser.setAccountBalance(destinationAccountUser.getAccountBalance().add(transferRequest.getAmount()));
         userRepository.save(destinationAccountUser);
         EmailDetails creditAlert = EmailDetails.builder()
-                .messageBody("The sum of " + transferRequest.getAmount() + "has been credited to your account! Your Current balance is " + destinationAccountUser.getAccountBalance())
+                .messageBody("The sum of " + transferRequest.getAmount() + "has been credited to your account from" + sourceUserName + "Your Current balance is " + destinationAccountUser.getAccountBalance())
                 .subject("CREDIT ALERT")
                 .recipient(destinationAccountUser.getEmail())
                 .build();
+        emailService.sendEmailAlert(creditAlert);
 
+        return BankResponse.builder()
+                .accountInfo(null)
+                .responseMessage(AccountUtils.TRANSFER_SUCCESSFUL_MESSAGE)
+                .responseCode(AccountUtils.TRANSFER_SUCCESSFUL)
+                .build();
 
     }
 

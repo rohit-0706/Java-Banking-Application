@@ -25,6 +25,8 @@ public class AccountUtils {
     public static final String DESTINATION_ACCOUNT_NOT_FOUNT_MESSAGE = "Destination account not found";
     public static final String SOURCE_ACCOUNT_NOT_FOUND = "009";
     public static final String SOURCE_ACCOUNT_NOT_FOUNT_MESSAGE = "Source account not found";
+    public static final String TRANSFER_SUCCESSFUL = "010";
+    public static final String TRANSFER_SUCCESSFUL_MESSAGE = "Transfer Completed Successfully";
 
     public static String generateAccountNumber(){
         /**

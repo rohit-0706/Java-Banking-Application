@@ -1,9 +1,6 @@
 package com.rohit.bankingProject.controller;
 
-import com.rohit.bankingProject.dto.BankResponse;
-import com.rohit.bankingProject.dto.CreditDebitRequest;
-import com.rohit.bankingProject.dto.EnquiryRequest;
-import com.rohit.bankingProject.dto.UserRequest;
+import com.rohit.bankingProject.dto.*;
 import com.rohit.bankingProject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +33,12 @@ public class UserController {
 
     @PostMapping("debit")
     public BankResponse debitAccount(@RequestBody CreditDebitRequest creditDebitRequest){
-        return userService.debitAccount((creditDebitRequest));
+        return userService.debitAccount(creditDebitRequest);
+    }
+
+    @PostMapping("transfer")
+    public BankResponse transfer(@RequestBody TransferRequest transferRequest){
+        return userService.transfer(transferRequest);
     }
 
 
