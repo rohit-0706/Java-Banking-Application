@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Builder
 @Entity
 @Table(name = "transactions")
-public class Transactions {
+public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String transactionId;

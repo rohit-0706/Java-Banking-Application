@@ -4,6 +4,7 @@ import com.rohit.bankingProject.dto.*;
 import com.rohit.bankingProject.entity.User;
 import com.rohit.bankingProject.repository.UserRepository;
 import com.rohit.bankingProject.service.EmailService;
+import com.rohit.bankingProject.service.TransactionService;
 import com.rohit.bankingProject.service.UserService;
 import com.rohit.bankingProject.utils.AccountUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     EmailService emailService;
+
+    @Autowired
+    TransactionService transactionService;
 
 
 
@@ -128,6 +132,15 @@ public class UserServiceImpl implements UserService {
         userToCredit.setAccountBalance(userToCredit.getAccountBalance().add(creditDebitRequest.getAmount()));
         userRepository.save(userToCredit);
 
+        //Save Transaction
+        TransactionDto transactionDto = TransactionDto.builder()
+                .accountNumber(userToCredit.getAccountNumber())
+                .transactionType("CREDIT")
+                .amount(creditDebitRequest.getAmount())
+                .build();
+
+        transactionService.saveTransaction(transactionDto);
+
         return BankResponse.builder()
                 .responseCode(AccountUtils.ACCOUNT_CREDITED_SUCCESS)
                 .responseMessage(AccountUtils.ACCOUNT_CREDITED_SUCCESS_MESSAGE)
@@ -165,6 +178,15 @@ public class UserServiceImpl implements UserService {
         else {
             userToDebit.setAccountBalance(userToDebit.getAccountBalance().subtract(creditDebitRequest.getAmount()));
             userRepository.save(userToDebit);
+
+            TransactionDto transactionDto = TransactionDto.builder()
+                    .accountNumber(userToDebit.getAccountNumber())
+                    .transactionType("DEBIT")
+                    .amount(creditDebitRequest.getAmount())
+                    .build();
+
+            transactionService.saveTransaction(transactionDto);
+
             return BankResponse.builder()
                     .responseCode(AccountUtils.ACCOUNT_DEBITED_SUCCESSFULLY)
                     .responseMessage(AccountUtils.ACCOUNT_DEBITED_SUCCESSFULLY_MESSAGE)
@@ -175,6 +197,8 @@ public class UserServiceImpl implements UserService {
                             .build())
                     .build();
         }
+
+
     }
 
     @Override
@@ -218,6 +242,14 @@ public class UserServiceImpl implements UserService {
                 .build();
         emailService.sendEmailAlert(debitAlerts);
 
+        TransactionDto transactionDto = TransactionDto.builder()
+                .accountNumber(sourceAccountUser.getAccountNumber())
+                .transactionType("DEBIT")
+                .amount(transferRequest.getAmount())
+                .build();
+        transactionService.saveTransaction(transactionDto);
+
+
         User destinationAccountUser = userRepository.findByAccountNumber((transferRequest.getDestinationAccountNumber()));
 
         destinationAccountUser.setAccountBalance(destinationAccountUser.getAccountBalance().add(transferRequest.getAmount()));
@@ -228,6 +260,13 @@ public class UserServiceImpl implements UserService {
                 .recipient(destinationAccountUser.getEmail())
                 .build();
         emailService.sendEmailAlert(creditAlert);
+
+        TransactionDto transactionDto1 = TransactionDto.builder()
+                .accountNumber(destinationAccountUser.getAccountNumber())
+                .transactionType("CREDIT")
+                .amount(transferRequest.getAmount())
+                .build();
+        transactionService.saveTransaction(transactionDto1);
 
         return BankResponse.builder()
                 .accountInfo(null)
