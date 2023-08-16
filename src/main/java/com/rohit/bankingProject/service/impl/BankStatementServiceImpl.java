@@ -32,20 +32,36 @@ public class BankStatementServiceImpl implements BankStatementService {
         LocalDate start = LocalDate.parse(startDate, DateTimeFormatter.ISO_DATE);
         LocalDate end = LocalDate.parse(endDate,DateTimeFormatter.ISO_DATE);
 
-   /*     List<Transaction> transactionList = transactionRepository.findAll();
-        transactionList = transactionList.stream()
-                .filter(transaction -> transaction.getAccountNumber().equals(accountNumber))
-                .filter(transaction -> transaction.getCreatedAt().isEqual(start))
-                .filter(transaction -> transaction.getCreatedAt().isEqual(end))
-                .toList();*/
 
-        List<Transaction> transactionList = transactionRepository.findByAccountNumber(accountNumber);
-        transactionList = transactionList.stream()
-                .filter(transaction -> transaction.getCreatedAt().isAfter(start))
-                .filter(transaction -> transaction.getCreatedAt().isBefore(end))
-                .toList();
+        /**
+         * In this method first I'm fetching all the transaction and then filtering
+         *
+         * List<Transaction> transactionList = transactionRepository.findAll();
+         *         transactionList = transactionList.stream()
+         *                 .filter(transaction -> transaction.getAccountNumber().equals(accountNumber))
+         *                 .filter(transaction -> ((transaction.getCreatedAt() != null) && (transaction.getCreatedAt().isAfter(start)
+         *                         || transaction.getCreatedAt().isEqual(start))
+         *                         &&  (transaction.getCreatedAt().isBefore(end)
+         *                         || transaction.getCreatedAt().isEqual(end))))
+         *                 .toList();
+         */
 
-        return transactionList;
+
+        /**
+         * In this method I'm fetching only accountNumber through JPA and then filtering
+         *
+         * transactionList = transactionRepository.findByAccountNumber(accountNumber);
+         *         List<Transaction> newTransactionList = transactionList.stream()
+         *                 .filter(transaction -> ((transaction.getCreatedAt().isAfter(start)
+         *                         || transaction.getCreatedAt().isEqual(start))
+         *                         &&  (transaction.getCreatedAt().isBefore(end)
+         *                         || transaction.getCreatedAt().isEqual(end))))
+         *                 .toList();
+         */
+
+        List<Transaction> transactionList2 = transactionRepository.findByAccountNumberAndCreatedAtBetween(accountNumber, start, end);
+
+        return transactionList2;
 
     }
 }
