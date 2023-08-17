@@ -1,15 +1,15 @@
 # Java-Banking-Application
 
-This is the Full fetched bankiing application.
+This is a Full-fetched banking application.
 Covering the below functionalities : 
 1. Account creation
-2. Email functioanlity
+2. Email Functionality
 3. Credit Amount
 4. Debit Amount
 5. Balance Transfer
-6. BankStatement generation
+6. bank statement generation
 
-Open for any optimization suggestion.
+I am open to any optimization suggestions.
 Keep coding!
 Keep grinding!
 RV(Rohit Verma)
