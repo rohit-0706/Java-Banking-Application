@@ -1,0 +1,228 @@
+{
+	"info": {
+		"_postman_id": "dd802d4c-0b79-4e29-86bb-84b3da782ce8",
+		"name": "RohitBank",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22895705"
+	},
+	"item": [
+		{
+			"name": "AccountCreation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\" : \"aayush\",\n    \"lastName\"  : \"roy\",\n    \"otherName\" :   \"\",\n    \"gender\"    :   \"Male\",\n    \"address\"   :   \"A-66 Nehru Garden Khora Colony Noida\",\n    \"stateOfOrigin\" :   \"Noida\",\n    \"email\" : \"aayush.roy@practo.com\",\n    \"phoneNumber\" : \"\",\n    \"alternativePhoneNumber\" : \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BalanceEnquiry",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accountNumber\" : \"2023526125\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/balanceEnquiry",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"balanceEnquiry"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "NameEnquiry",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accountNumber\" : \"2023526125\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/nameEnquiry",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"nameEnquiry"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Debit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 200,\n    \"accountNumber\": \"2023699896\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/debit",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"debit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"sourceAccountNumber\": \"2023699896\",\n    \"destinationAccountNumber\": \"2023227736\",\n    \"amount\": \"100\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/transfer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Credit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 500,\n    \"accountNumber\": \"2023227736\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/credit",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"credit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BankStatement",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/bankStatement?accountNumber=2023699896&startDate=2023-08-14&endDate=2023-08-16",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bankStatement"
+					],
+					"query": [
+						{
+							"key": "accountNumber",
+							"value": "2023699896"
+						},
+						{
+							"key": "startDate",
+							"value": "2023-08-14"
+						},
+						{
+							"key": "endDate",
+							"value": "2023-08-16"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
